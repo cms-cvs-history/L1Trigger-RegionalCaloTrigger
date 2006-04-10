@@ -1,0 +1,9 @@
+<use name=L1Trigger/RegionalCaloTrigger>
+<bin file=testL1RCTRegion.cpp></bin>
+<bin file=testL1RCT.cpp></bin>
+<bin file=testL1RCTCrate.cpp></bin>
+<bin file=testL1RCTElectronIsolationCard.cpp></bin>
+<bin file=testL1RCTJetSummaryCard.cpp></bin>
+<bin file=testL1RCTLookupTables.cpp></bin>
+<bin file=testL1RCTNeighborMap.cpp></bin>
+<bin file=testL1RCTReceiverCard.cpp></bin>
