@@ -1,4 +1,4 @@
-#include "L1RCTORCAMap.h"
+#include "L1Trigger/RegionalCaloTrigger/interface/L1RCTORCAMap.h"
 
 L1RCTORCAMap::L1RCTORCAMap(){
   rawEMET = vector<unsigned short>(56*72);
