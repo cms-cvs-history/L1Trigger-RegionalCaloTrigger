@@ -9,3 +9,7 @@
 <bin file=testL1RCTReceiverCard.cpp></bin>
 <bin file=testL1RCTORCAMap.cpp></bin>
 <bin file=testL1RCTORCAMapAux.cpp></bin>
+<bin file=cratePatterns.cpp></bin>
+<bin file=electronLoop.cpp></bin>
+<bin file=manyTimesLoop.cpp></bin>
+<bin file=runOrcaOutput.cpp></bin>
