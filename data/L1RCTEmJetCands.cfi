@@ -1,0 +1,4 @@
+module L1RCTEmJetCands = L1RCTProducer {
+        string src = "/afs/hep.wisc.edu/user/leonard/L1RCT/data/rct-input-1.dat"
+        untracked bool orcaFileInput = false
+}
