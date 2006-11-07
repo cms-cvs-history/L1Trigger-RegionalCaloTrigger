@@ -13,3 +13,4 @@
 <bin file=electronLoop.cpp></bin>
 <bin file=manyTimesLoop.cpp></bin>
 <bin file=runOrcaOutput.cpp></bin>
+<bin file=testMap.cc></bin>
