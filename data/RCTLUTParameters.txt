@@ -1,0 +1,5 @@
+eActivityCut  3.0
+hActivityCut  3.0
+hOeCut        0.05
+eGammaLSB     0.5
+jetMETLSB     0.5
