@@ -1,5 +1,5 @@
 module L1RCTRegionSumsEmCands = L1RCTProducer {
-    FileInPath lutFile = "L1Trigger/RegionalCaloTrigger/data/TPGcalc.txt"
+    FileInPath lutFile = "L1Trigger/RegionalCaloTrigger/data/RCTLUTParameters.txt"
     untracked bool orcaFileInput = false   # file below will not be used - but is there for info
     FileInPath src = "L1Trigger/RegionalCaloTrigger/data/rct-input-1.dat"
 }
