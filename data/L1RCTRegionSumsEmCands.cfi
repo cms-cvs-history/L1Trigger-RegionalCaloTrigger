@@ -4,4 +4,6 @@ module L1RCTRegionSumsEmCands = L1RCTProducer {
     FileInPath src = "L1Trigger/RegionalCaloTrigger/data/rct-input-1.dat"
     string rctTestInputFile = "-NONE-"
     string rctTestOutputFile = "-NONE-"
+    untracked bool patternTest = false
+    FileInPath lutFile2 = "L1Trigger/RegionalCaloTrigger/data/RCTHcalScaleFactors.txt"
 }
