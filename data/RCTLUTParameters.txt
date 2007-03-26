@@ -1,10 +1,11 @@
-eActivityCut  3.0
-hActivityCut  3.0
-eMaxForFGCut  50.0
-hOeCut        0.05
-eGammaLSB     0.5
-jetMETLSB     0.5
-Below are 26 scale factors for the eGamma objects, for each of the 26 eta bins
+eActivityCut		3.0
+hActivityCut		3.0
+eMaxForFGCut		50.0
+hOeCut			0.05
+eGammaLSB		0.5
+jetMETLSB		0.5
+ignoreEcalFineGrain	0
+ecalScaleFactors:
 1.00
 1.01
 1.02
