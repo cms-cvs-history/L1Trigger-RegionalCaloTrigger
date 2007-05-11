@@ -83,6 +83,7 @@ L1RCT::L1RCT(std::string lutFile,
   transcoder_ = transcoder;
   lut = new L1RCTLookupTables(lutFile, transcoder);
   makeCrates();
+  patternTest_ = false;
 }
 
 void L1RCT::setGctEmScale(const L1CaloEtScale* scale){
@@ -486,19 +487,19 @@ L1CaloEmCollection L1RCT::getIsolatedEGObjects(int crate){
   for (int i = 0; i < 4; i++){
     unsigned short rgn = ((isoEmObjects.at(i)) & 1);
     unsigned short crd = (((isoEmObjects.at(i))/2) & 7);
-    unsigned short energy = ((isoEmObjects.at(i))/16);
+    unsigned short energy = ((isoEmObjects.at(i))/16);  // up to 8-bits
     unsigned short rank;
     if (!patternTest_)
       {
-	rank = gctEmScale->rank(energy);
+	rank = energy / 2;   // Drop the lowest bit
+	if (rank > 0x3f) rank = 0x3f; // Peg it to 6-bits
       }
     else
       {
 	rank = energy;
+	if (rank > 0x3f) rank = 0x3f;
       }
     L1CaloEmCand isoCand(rank, rgn, crd, crate, 1);
-    // L1CaloEmCand isoCand(energy, rgn, crd, crate, 1);  // uses 7-bit energy as rank here, temporarily
-    // cout << "card " << crd << "region " << rgn << "energy " << energy << endl;
     isoEmCands.push_back(isoCand);
   }
   return isoEmCands;
@@ -513,18 +514,19 @@ L1CaloEmCollection L1RCT::getNonisolatedEGObjects(int crate){
   for (int i = 0; i < 4; i++){
     unsigned short rgn = ((nonIsoEmObjects.at(i)) & 1);
     unsigned short crd = (((nonIsoEmObjects.at(i))/2) & 7);
-    unsigned short energy = ((nonIsoEmObjects.at(i))/16);
+    unsigned short energy = ((nonIsoEmObjects.at(i))/16);  // up to 8-bits
     unsigned short rank;
     if (!patternTest_)
       {
-	rank = gctEmScale->rank(energy);
+	rank = energy / 2;   // Drop the lowest bit
+	if (rank > 0x3f) rank = 0x3f; // Peg it to 6-bits
       }
     else
       {
 	rank = energy;
+	if (rank > 0x3f) rank = 0x3f;
       }
     L1CaloEmCand nonIsoCand(rank, rgn, crd, crate, 0);
-    //L1CaloEmCand nonIsoCand(energy, rgn, crd, crate, 0);  // uses 7-bit energy as rank here, temporarily
     nonIsoEmCands.push_back(nonIsoCand);
   }
   return nonIsoEmCands;
