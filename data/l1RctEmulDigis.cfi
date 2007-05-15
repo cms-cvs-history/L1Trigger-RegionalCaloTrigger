@@ -6,4 +6,8 @@ module l1RctEmulDigis = L1RCTProducer {
     string rctTestOutputFile = "-NONE-"
     untracked bool patternTest = false
     FileInPath lutFile2 = "L1Trigger/RegionalCaloTrigger/data/RCTHcalScaleFactors.txt"
+    bool useEcal = true
+    bool useHcal = true
+    InputTag ecalDigisLabel = ecalTriggerPrimitiveDigis
+    InputTag hcalDigisLabel = hcalTriggerPrimitiveDigis
 }
