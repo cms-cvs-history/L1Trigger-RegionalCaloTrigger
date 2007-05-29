@@ -6,8 +6,8 @@
 
 #include "CalibFormats/CaloTPG/interface/CaloTPGTranscoder.h"
 #include "CalibFormats/CaloTPG/interface/CaloTPGRecord.h"
-#include "CondFormats/L1TObjects/interface/L1CaloEtScale.h"
-#include "CondFormats/DataRecord/interface/L1EmEtScaleRcd.h"
+#include "L1Trigger/L1Scales/interface/L1CaloEtScale.h"
+#include "L1Trigger/L1Scales/interface/L1EmEtScaleRcd.h"
 
 #include "L1Trigger/RegionalCaloTrigger/interface/L1RCT.h"
 
@@ -26,7 +26,9 @@ L1RCTProducer::L1RCTProducer(const edm::ParameterSet& conf) :
   rctTestInputFile(conf.getParameter<std::string>("rctTestInputFile")),
   rctTestOutputFile(conf.getParameter<std::string>("rctTestOutputFile")),
   patternTest(conf.getUntrackedParameter<bool>("patternTest")),
-  lutFile2(conf.getParameter<edm::FileInPath>("lutFile2"))
+  lutFile2(conf.getParameter<edm::FileInPath>("lutFile2")),
+  ecalDigisLabel(conf.getParameter<edm::InputTag>("ecalDigisLabel")),
+  hcalDigisLabel(conf.getParameter<edm::InputTag>("hcalDigisLabel"))
 {
   //produces<JSCOutput>();
   
@@ -71,8 +73,9 @@ void L1RCTProducer::produce(edm::Event& e, const edm::EventSetup& c)
     edm::ESHandle<L1CaloEtScale> emScale;
     //e.getByType(ecal);
     //e.getByType(hcal);
-    e.getByLabel("ecalTriggerPrimitiveDigis",ecal);
-    e.getByLabel("hcalTriggerPrimitiveDigis",hcal);
+    //e.getByLabel("hcalTriggerPrimitiveDigis",hcal);
+    e.getByLabel(ecalDigisLabel, ecal);
+    e.getByLabel(hcalDigisLabel, hcal);
     c.get<L1EmEtScaleRcd>().get(emScale);
 
     // as in L1GctEmulator.cc
