@@ -1,0 +1,16 @@
+module maskedRctInputDigis = MaskedRctInputDigiProducer {
+	bool useEcal = true
+	bool useHcal = false
+	InputTag ecalDigisLabel = ecalTriggerPrimitiveDigis
+	InputTag hcalDigisLabel = hcalTriggerPrimitiveDigis
+	FileInPath maskFile = "L1Trigger/RegionalCaloTrigger/data/maskEcalGren2.txt"
+}
+
+module l1RctEmulDigis = L1RCTProducer {
+	bool useEcal = true
+	bool useHcal = false
+	InputTag ecalDigisLabel = maskedRctInputDigis
+	InputTag hcalDigisLabel = maskedRctInputDigis
+}
+
+path l1RctSequence = { maskedRctInputDigis, l1RctEmulDigis }
