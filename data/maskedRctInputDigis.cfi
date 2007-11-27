@@ -1,0 +1,8 @@
+module maskedRctInputDigis = MaskedRctInputDigiProducer
+    {
+	bool useEcal = true
+	bool useHcal = true
+	InputTag ecalDigisLabel = ecalTriggerPrimitiveDigis
+	InputTag hcalDigisLabel = hcalTriggerPrimitiveDigis
+	FileInPath maskFile = "testMaskOutEtaMinus.txt"
+    }
