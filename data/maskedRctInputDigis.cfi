@@ -4,5 +4,5 @@ module maskedRctInputDigis = MaskedRctInputDigiProducer
 	bool useHcal = true
 	InputTag ecalDigisLabel = ecalTriggerPrimitiveDigis
 	InputTag hcalDigisLabel = hcalTriggerPrimitiveDigis
-	FileInPath maskFile = "testMaskOutEtaMinus.txt"
+	FileInPath maskFile = "L1Trigger/RegionalCaloTrigger/test/data/emptyMask.txt"
     }
