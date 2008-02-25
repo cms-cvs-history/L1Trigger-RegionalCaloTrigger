@@ -1,4 +1,4 @@
 module l1RctValidation = L1RCTRelValAnalyzer {
-	InputTag rctEmCandsLabel = l1RctEmulDigis
-	InputTag rctRegionsLabel = l1RctEmulDigis
+	InputTag rctEmCandsLabel = rctDigis
+	InputTag rctRegionsLabel = rctDigis
 }
