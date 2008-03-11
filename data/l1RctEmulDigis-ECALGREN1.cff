@@ -11,6 +11,8 @@ module l1RctEmulDigis = L1RCTProducer {
 	bool useHcal = false
 	InputTag ecalDigisLabel = maskedRctInputDigis
 	InputTag hcalDigisLabel = maskedRctInputDigis
+	uint32 preSamples = 0	
+	uint32 postSamples = 0
 }
 
 path l1RctSequence = { maskedRctInputDigis, l1RctEmulDigis }
