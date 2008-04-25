@@ -10,6 +10,8 @@ module rctDigis = L1RCTProducer {
     bool useHcal = true
     InputTag ecalDigisLabel = ecalTriggerPrimitiveDigis
     InputTag hcalDigisLabel = hcalTriggerPrimitiveDigis
+    string ecalESLabel = ""
+    string hcalESLabel = ""
     uint32 preSamples = 0
     uint32 postSamples = 0
 }

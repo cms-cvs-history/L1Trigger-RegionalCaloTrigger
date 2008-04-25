@@ -11,6 +11,8 @@ module l1RctEmulDigis = L1RCTProducer {
 	bool useHcal = true
 	InputTag ecalDigisLabel = maskedRctInputDigis
 	InputTag hcalDigisLabel = maskedRctInputDigis
+	string ecalESLabel = ""
+	string hcalESLabel = ""
 	uint32 preSamples = 0
 	uint32 postSamples = 0
 }
