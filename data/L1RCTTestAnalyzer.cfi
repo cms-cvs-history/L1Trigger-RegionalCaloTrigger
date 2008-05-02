@@ -1,4 +1,7 @@
 module L1RCTTestAnalyzer = L1RCTTestAnalyzer{
 	untracked bool showEmCands = true
 	untracked bool showRegionSums = true
+	InputTag ecalDigisLabel = ecalTriggerPrimitiveDigis
+	InputTag hcalDigisLabel = hcalTriggerPrimitiveDigis
+	InputTag rctDigisLabel = rctDigis
 }
