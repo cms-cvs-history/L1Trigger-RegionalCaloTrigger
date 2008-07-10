@@ -1,0 +1,8 @@
+module rctSaveInput = L1RCTSaveInput {
+	untracked string rctTestInputFile = "rctSaveTest.txt"
+	bool useEcal = true
+	bool useHcal = true
+	InputTag ecalDigisLabel = ecalTriggerPrimitiveDigis
+	InputTag hcalDigisLabel = hcalTriggerPrimitiveDigis
+	bool useDebugTpgScales = false
+}

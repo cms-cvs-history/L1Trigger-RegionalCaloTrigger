@@ -1,0 +1,5 @@
+module rctLutWriter = L1RCTLutWriter
+{
+	bool useDebugTpgScales = false
+	string key = "notAKey"
+}
