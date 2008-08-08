@@ -117,14 +117,14 @@ process.source = cms.Source("FlatRandomPtGunSource",
 process.load("PhysicsTools.HepMCCandAlgos.genParticles_cfi")
     
 process.load("L1Trigger.RegionalCaloTrigger.rctGenCalibrator_cfi")
-process.genCalibrator.CalibrationInputs = cms.VInputTag("genParticles")
-process.genCalibrator.OutputFile = cms.string("RCTGenCalibrator")
-process.genCalibrator.debug = cms.untracked.int32(-1)
+process.rctGenCalibrator.CalibrationInputs = cms.VInputTag("genParticles")
+process.rctGenCalibrator.OutputFile = cms.string("RCTGenCalibrator")
+process.rctGenCalibrator.debug = cms.untracked.int32(-1)
 
 process.p0 = cms.Path(process.pgen)
 process.p1 = cms.Path(process.psim)
 process.p2 = cms.Path(process.pdigi)
-process.p4 = cms.Path(process.genParticles + process.rctDigis + process.genCalibrator)
+process.p4 = cms.Path(process.genParticles + process.rctDigis + process.rctGenCalibrator)
 process.schedule = cms.Schedule(process.p0,process.p1,process.p2,process.p4)
 
 
