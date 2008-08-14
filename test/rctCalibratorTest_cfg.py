@@ -1,47 +1,14 @@
-# The following comments couldn't be translated into the new config version:
-
-#    path p4 = {maskedRctInputDigis, rctDigis}
-#    path p4 = {L1Emulator}
-# Event output
-#include "Configuration/EventContent/data/EventContent.cff"
-#   module FEVT = PoolOutputModule 
-#   { 
-#     	using FEVTSIMEventContent
-#	untracked string fileName = "rctTest.root"
-#    	#untracked PSet dataset ={	
-#        #	untracked string dataTier = "GEN-SIM-DIGI-RECO"
-#    	#	}
-#   }
-#   endpath outpath = {FEVT}
-
 import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("TEST")
-#	untracked PSet maxEvents = {untracked int32 input = 2}
-#include "Configuration/ReleaseValidation/data/Services.cff"
-process.load("Configuration.StandardSequences.Services_cff")
 
-process.load("Configuration.StandardSequences.FakeConditions_cff")
+process.load("Configuration.StandardSequences.Services_cff")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 
-process.load("Configuration.StandardSequences.Geometry_cff")
-
-process.load("Configuration.StandardSequences.Generator_cff")
-
-process.load("Configuration.StandardSequences.Reconstruction_cff")
-
-process.load("Configuration.StandardSequences.Simulation_cff")
-
-process.load("Configuration.StandardSequences.MixingNoPileUp_cff")
-
-process.load("Configuration.StandardSequences.VtxSmearedGauss_cff")
-
-#needed to prevent exception
-process.load("Configuration.StandardSequences.MagneticField_cff")
-
-#include "L1Trigger/RegionalCaloTrigger/data/maskedRctInputDigis.cfi"
-process.load("SimCalorimetry.HcalTrigPrimProducers.hcaltpdigi_cff")
+process.MessageLogger.desinations = cms.untracked.vstring( "cout" )
+process.MessageLogger.cout = cms.untracked.PSet( threshold = cms.untracked.string("INFO") )
+process.MessageLogger.debugModules = cms.untracked.vstring( "rctGenCalibrator" )
 
 process.load("L1TriggerConfig.RCTConfigProducers.L1RCTConfig_cff")
 
@@ -49,83 +16,52 @@ process.load("L1TriggerConfig.L1ScalesProducers.L1CaloScalesConfig_cff")
 
 process.load("L1TriggerConfig.L1ScalesProducers.L1CaloInputScalesConfig_cff")
 
-#include "L1Trigger/RegionalCaloTrigger/data/L1RCTTestAnalyzer.cfi"
-#replace L1RCTTestAnalyzer.showRegionSums = false
-#include "Configuration/StandardSequences/data/L1Emulator.cff"
-process.load("L1Trigger.RegionalCaloTrigger.rctDigis_cfi")
-
-process.rctDigis.ecalDigisLabel = cms.InputTag("simEcalTriggerPrimitiveDigis")
-process.rctDigis.hcalDigisLabel = cms.InputTag("simHcalTriggerPrimitiveDigis")
-
 process.load("L1TriggerConfig.L1GeometryProducers.l1CaloGeomConfig_cff")
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(2)
-)
-process.options = cms.untracked.PSet(
-    makeTriggerResults = cms.untracked.bool(True),
-    Rethrow = cms.untracked.vstring('Unknown', 
-        'ProductNotFound', 
-        'DictionaryNotFound', 
-        'InsertFailure', 
-        'Configuration', 
-        'LogicError', 
-        'UnimplementedFeature', 
-        'InvalidReference', 
-        'NullPointerError', 
-        'NoProductSpecified', 
-        'EventTimeout', 
-        'EventCorruption', 
-        'ModuleFailure', 
-        'ScheduleExecutionFailure', 
-        'EventProcessorFailure', 
-        'FileInPathError', 
-        'FatalRootError', 
-        'NotFound')
+    input = cms.untracked.int32(-1)
 )
 
-process.TFileService = cms.Service("TFileService",
-    fileName = cms.string('rctTest.root')
-)
+process.load("FWCore.Framework.test.cmsExceptionsFatal_cff")
 
-process.source = cms.Source("FlatRandomPtGunSource",
-    PGunParameters = cms.untracked.PSet(
-        MaxPt = cms.untracked.double(35.001),
-        #		untracked double MinPhi = 0.
-        #		untracked double MaxPhi = 0.5
-        MinPt = cms.untracked.double(34.999),
-        # You can request more than one particle
-        # since PartID is a vector, you can place in as many
-        # PDG id's as you wish, comma-separated
-        #
-        #untracked vint32 PartID = {11,-11,13,-13,211,-211}         # e-e+mu-mu+pi+pi-
-        #untracked vint32 PartID = {11,-11}         # electron, positron
-        #untracked vint32 PartID = {211, -211}         # pi+ pi-
-        PartID = cms.untracked.vint32(211),
-        MaxEta = cms.untracked.double(2.5),
-        MaxPhi = cms.untracked.double(3.14159265359),
-        MinEta = cms.untracked.double(-2.5),
-        MinPhi = cms.untracked.double(-3.14159265359) ## in radians
-
-    ),
-    Verbosity = cms.untracked.int32(0), ## set to 1 (or greater) for printouts
-
-    psethack = cms.string('single e pt 35'),
-    firstRun = cms.untracked.uint32(1)
-)
-
-process.load("PhysicsTools.HepMCCandAlgos.genParticles_cfi")
+process.source = cms.Source("PoolSource",
+                            fileNames = cms.untracked.vstring("dcap://cmsdcap.hep.wisc.edu:22125/pnfs/hep.wisc.edu/store/user/lgray/PGun2pi2gamma/PGun2pi2gamma-0000.root",
+                                                              "dcap://cmsdcap.hep.wisc.edu:22125/pnfs/hep.wisc.edu/store/user/lgray/PGun2pi2gamma/PGun2pi2gamma-0001.root",
+                                                              "dcap://cmsdcap.hep.wisc.edu:22125/pnfs/hep.wisc.edu/store/user/lgray/PGun2pi2gamma/PGun2pi2gamma-0002.root",
+                                                              "dcap://cmsdcap.hep.wisc.edu:22125/pnfs/hep.wisc.edu/store/user/lgray/PGun2pi2gamma/PGun2pi2gamma-0003.root",
+                                                              "dcap://cmsdcap.hep.wisc.edu:22125/pnfs/hep.wisc.edu/store/user/lgray/PGun2pi2gamma/PGun2pi2gamma-0004.root",
+                                                              "dcap://cmsdcap.hep.wisc.edu:22125/pnfs/hep.wisc.edu/store/user/lgray/PGun2pi2gamma/PGun2pi2gamma-0005.root",
+                                                              "dcap://cmsdcap.hep.wisc.edu:22125/pnfs/hep.wisc.edu/store/user/lgray/PGun2pi2gamma/PGun2pi2gamma-0006.root",
+                                                              "dcap://cmsdcap.hep.wisc.edu:22125/pnfs/hep.wisc.edu/store/user/lgray/PGun2pi2gamma/PGun2pi2gamma-0007.root",
+                                                              "dcap://cmsdcap.hep.wisc.edu:22125/pnfs/hep.wisc.edu/store/user/lgray/PGun2pi2gamma/PGun2pi2gamma-0008.root",
+                                                              "dcap://cmsdcap.hep.wisc.edu:22125/pnfs/hep.wisc.edu/store/user/lgray/PGun2pi2gamma/PGun2pi2gamma-0009.root",
+                                                              "dcap://cmsdcap.hep.wisc.edu:22125/pnfs/hep.wisc.edu/store/user/lgray/PGun2pi2gamma/PGun2pi2gamma-0010.root",
+                                                              "dcap://cmsdcap.hep.wisc.edu:22125/pnfs/hep.wisc.edu/store/user/lgray/PGun2pi2gamma/PGun2pi2gamma-0011.root",
+                                                              "dcap://cmsdcap.hep.wisc.edu:22125/pnfs/hep.wisc.edu/store/user/lgray/PGun2pi2gamma/PGun2pi2gamma-0012.root",
+                                                              "dcap://cmsdcap.hep.wisc.edu:22125/pnfs/hep.wisc.edu/store/user/lgray/PGun2pi2gamma/PGun2pi2gamma-0013.root",
+                                                              "dcap://cmsdcap.hep.wisc.edu:22125/pnfs/hep.wisc.edu/store/user/lgray/PGun2pi2gamma/PGun2pi2gamma-0014.root",
+                                                              "dcap://cmsdcap.hep.wisc.edu:22125/pnfs/hep.wisc.edu/store/user/lgray/PGun2pi2gamma/PGun2pi2gamma-0015.root",
+                                                              "dcap://cmsdcap.hep.wisc.edu:22125/pnfs/hep.wisc.edu/store/user/lgray/PGun2pi2gamma/PGun2pi2gamma-0016.root",
+                                                              "dcap://cmsdcap.hep.wisc.edu:22125/pnfs/hep.wisc.edu/store/user/lgray/PGun2pi2gamma/PGun2pi2gamma-0017.root",
+                                                              "dcap://cmsdcap.hep.wisc.edu:22125/pnfs/hep.wisc.edu/store/user/lgray/PGun2pi2gamma/PGun2pi2gamma-0018.root",
+                                                              "dcap://cmsdcap.hep.wisc.edu:22125/pnfs/hep.wisc.edu/store/user/lgray/PGun2pi2gamma/PGun2pi2gamma-0019.root",
+                                                              "dcap://cmsdcap.hep.wisc.edu:22125/pnfs/hep.wisc.edu/store/user/lgray/PGun2pi2gamma/PGun2pi2gamma-0020.root"
+                                                              )
+                            )
     
 process.load("L1Trigger.RegionalCaloTrigger.rctGenCalibrator_cfi")
+process.rctGenCalibrator.RegionsInput = cms.InputTag("simRctDigis")
+process.rctGenCalibrator.EcalTPGInput = cms.InputTag("simEcalTriggerPrimitiveDigis")
+process.rctGenCalibrator.HcalTPGInput = cms.InputTag("simHcalTriggerPrimitiveDigis")
 process.rctGenCalibrator.CalibrationInputs = cms.VInputTag("genParticles")
 process.rctGenCalibrator.OutputFile = cms.string("RCTGenCalibrator")
-process.rctGenCalibrator.debug = cms.untracked.int32(-1)
+process.rctGenCalibrator.debug = cms.untracked.int32(0)
 
-process.p0 = cms.Path(process.pgen)
-process.p1 = cms.Path(process.psim)
-process.p2 = cms.Path(process.pdigi)
-process.p4 = cms.Path(process.genParticles + process.rctDigis + process.rctGenCalibrator)
-process.schedule = cms.Schedule(process.p0,process.p1,process.p2,process.p4)
+#process.p0 = cms.Path(process.pgen)
+#process.p1 = cms.Path(process.psim)
+#process.p2 = cms.Path(process.pdigi)
+process.p4 = cms.Path(process.rctGenCalibrator)
+process.schedule = cms.Schedule(process.p4)
 
 
 
