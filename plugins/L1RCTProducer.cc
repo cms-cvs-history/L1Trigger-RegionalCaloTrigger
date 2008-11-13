@@ -485,12 +485,32 @@ void L1RCTProducer::produce(edm::Event& event, const edm::EventSetup& eventSetup
 		  //else
 		  if ((!useHcalCosmicTiming) || (iphi >= 37 && iphi <= 72))
 		    {
-		      hcalDigi.setSample(0, HcalTriggerPrimitiveSample
-					 (hcal_it->sample(hcal_it->
-							  presamples() + 
-							  sample - 
-							  preSamples).raw()));
-		      
+
+		      //If it is MC keep as it is
+		      if(useMCAsInput)
+			{
+			  hcalDigi.setSample(0, HcalTriggerPrimitiveSample
+					     (hcal_it->sample(hcal_it->
+							      presamples() + 
+							      sample - 
+							      preSamples).raw()));
+			}
+		      else //It is data 
+			{
+			  if(ieta>-29 && ieta<29) 
+			    hcalDigi.setSample(0, HcalTriggerPrimitiveSample
+					       (hcal_it->sample(hcal_it->
+							      presamples() + 
+								sample - 
+								preSamples+hbShift).raw()));
+			  if(ieta<=-29 || ieta>=29)
+			    hcalDigi.setSample(0, HcalTriggerPrimitiveSample
+					       (hcal_it->sample(hcal_it->
+							      presamples() + 
+								sample - 
+								preSamples+hfShift).raw()));
+
+			}
 		    }
 		  hcalColl[sample].push_back(hcalDigi);
 		}
