@@ -46,7 +46,10 @@ L1RCTProducer::L1RCTProducer(const edm::ParameterSet& conf) :
   useHcalCosmicTiming(conf.getParameter<bool>("useHcalCosmicTiming")),
   useEcalCosmicTiming(conf.getParameter<bool>("useEcalCosmicTiming")),
   preSamples(conf.getParameter<unsigned>("preSamples")),
-  postSamples(conf.getParameter<unsigned>("postSamples"))
+  postSamples(conf.getParameter<unsigned>("postSamples")),
+  useMCAsInput(conf.getParameter<bool>("UseMCAsInput")),
+  hfShift(conf.getParameter<int>("HFShift")),
+  hbShift(conf.getParameter<int>("HBShift"))
 {
   produces<L1CaloEmCollection>();
   produces<L1CaloRegionCollection>();
@@ -485,12 +488,33 @@ void L1RCTProducer::produce(edm::Event& event, const edm::EventSetup& eventSetup
 		  //else
 		  if ((!useHcalCosmicTiming) || (iphi >= 37 && iphi <= 72))
 		    {
-		      hcalDigi.setSample(0, HcalTriggerPrimitiveSample
-					 (hcal_it->sample(hcal_it->
-							  presamples() + 
-							  sample - 
-							  preSamples).raw()));
-		      
+
+		      //If it is MC keep as it is
+//		      if(useMCAsInput)
+//			{
+			  hcalDigi.setSample(0, HcalTriggerPrimitiveSample
+					     (hcal_it->sample(hcal_it->
+							      presamples() + 
+							      sample - 
+							      preSamples).raw()));
+/*			}
+		      else //It is data 
+			{
+			  if(ieta>-29 && ieta<29) 
+			    hcalDigi.setSample(0, HcalTriggerPrimitiveSample
+					       (hcal_it->sample(hcal_it->
+							      presamples() + 
+								sample - 
+								preSamples+hbShift).raw()));
+			  if(ieta<=-29 || ieta>=29)
+			    hcalDigi.setSample(0, HcalTriggerPrimitiveSample
+					       (hcal_it->sample(hcal_it->
+							      presamples() + 
+								sample - 
+								preSamples+hfShift).raw()));
+
+			}
+*/
 		    }
 		  hcalColl[sample].push_back(hcalDigi);
 		}
@@ -558,11 +582,36 @@ void L1RCTProducer::produce(edm::Event& event, const edm::EventSetup& eventSetup
 		  //else
 		  if ((!useHcalCosmicTiming) || (iphi >= 37 && iphi <= 72))
 		    {
-		      hcalDigi.setSample(0, HcalTriggerPrimitiveSample
-					 (hcal_it->sample(hcal_it->
-							  presamples() + 
-							  sample - 
-							  preSamples).raw()));
+//		      hcalDigi.setSample(0, HcalTriggerPrimitiveSample
+//					 (hcal_it->sample(hcal_it->
+//							  presamples() + 
+//							  sample - 
+//							  preSamples).raw()));
+		      //If it is MC keep as it is
+		      if(useMCAsInput)
+			{
+			  hcalDigi.setSample(0, HcalTriggerPrimitiveSample
+					     (hcal_it->sample(hcal_it->
+							      presamples() + 
+							      sample - 
+							      preSamples).raw()));
+			}
+		      else //It is data 
+			{
+			  if(ieta>-29 && ieta<29) 
+			    hcalDigi.setSample(0, HcalTriggerPrimitiveSample
+					       (hcal_it->sample(hcal_it->
+							      presamples() + 
+								sample - 
+								preSamples+hbShift).raw()));
+			  if(ieta<=-29 || ieta>=29)
+			    hcalDigi.setSample(0, HcalTriggerPrimitiveSample
+					       (hcal_it->sample(hcal_it->
+							      presamples() + 
+								sample - 
+								preSamples+hfShift).raw()));
+
+			}
 		    }
 		  hcalColl[sample].push_back(hcalDigi);  
 		}
