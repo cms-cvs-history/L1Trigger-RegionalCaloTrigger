@@ -154,7 +154,7 @@ unsigned int L1RCTLookupTables::lookup(unsigned short hfInput,
     throw cms::Exception("Invalid Data") 
       << "29 <= |iEta| <= 32, is " << iAbsEta;
   float et;
-  if (channelMask_->hfMask[crtNo][phiSide][iAbsEta])
+  if (channelMask_->hfMask[crtNo][phiSide][iAbsEta-29])
     {
       et = 0;
     }
@@ -162,7 +162,14 @@ unsigned int L1RCTLookupTables::lookup(unsigned short hfInput,
     {
       et = convertHcal(hfInput, iAbsEta, sign);
     }
-  return convertToInteger(et, rctParameters_->jetMETLSB(), 8);
+  unsigned int result = convertToInteger(et, rctParameters_->jetMETLSB(), 8);
+  /*  std::cout << "HF input: " << hfInput << "  |ieta|: " << iAbsEta
+	    << "  |ieta|-29: " << iAbsEta-29 << "  crtNo: " << crtNo
+	    << "  phiSide: " << phiSide
+	    << "  hfmask: " << channelMask_->hfMask[crtNo][phiSide][iAbsEta-29]
+	    << "  converted et: " 
+	    << et << "  output: " << result << std::endl; */
+  return result;
 }
 
 bool L1RCTLookupTables::hOeFGVetoBit(float ecal, float hcal, bool fgbit) const
@@ -181,7 +188,8 @@ bool L1RCTLookupTables::hOeFGVetoBit(float ecal, float hcal, bool fgbit) const
     {
       if((hcal / ecal) > rctParameters_->hOeCut()) veto = true;
     }
-  else 
+  //  else 
+  if(ecal < rctParameters_->eMinForHoECut())
     {
       if(hcal > rctParameters_->hMinForHoECut()) veto = true;  // Changed from eMinForHoECut() - JLL 2008-Feb-13
     }
