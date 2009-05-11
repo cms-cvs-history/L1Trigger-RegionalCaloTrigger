@@ -35,22 +35,9 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process("TEST")
 process.load("SimCalorimetry.HcalTrigPrimProducers.hcaltpdigi_cff")
 
-process.load("L1TriggerConfig.RCTConfigProducers.L1RCTConfigPatternTests_cff")
-
 process.load("L1Trigger.RegionalCaloTrigger.rctDigis_cfi")
 
-#process.load("L1Trigger.RegionalCaloTrigger.L1RCTPatternTestAnalyzer_cfi")
-
-process.L1RCTPatternTestAnalyzer = cms.EDAnalyzer("L1RCTPatternTestAnalyzer",
-    hcalDigisLabel = cms.InputTag("hcalTriggerPrimitiveDigis"),
-    showEmCands = cms.untracked.bool(True),
-    testName = cms.untracked.string("none"),
-    limitTo64 =  cms.untracked.bool(False),
-    ecalDigisLabel = cms.InputTag("ecalTriggerPrimitiveDigis"),
-    rctDigisLabel = cms.InputTag("rctDigis"),
-    showRegionSums = cms.untracked.bool(True)
-)
-
+process.load("L1Trigger.RegionalCaloTrigger.L1RCTPatternTestAnalyzer_cfi")
 
 process.load("L1TriggerConfig.L1ScalesProducers.L1CaloScalesConfig_cff")
 
@@ -110,8 +97,6 @@ process.eegeom = cms.ESSource("EmptyESSource",
     firstValid = cms.vuint32(1)
 )
 
-
-
 # L1 GT EventSetup
 from L1TriggerConfig.L1GtConfigProducers.L1GtConfig_cff import *
 from L1TriggerConfig.L1GtConfigProducers.Luminosity.startup.L1Menu_startup_v3_Unprescaled_cff import *
@@ -137,6 +122,8 @@ process.htr_xml = cms.EDFilter("HtrXmlPattern",
     hand_pattern_number = cms.untracked.int32(3)
 )
 
+process.load("L1TriggerConfig.RCTConfigProducers.L1RCTConfigPatternTests_cff")
+
 process.RCTConfigProducers.eGammaLSB = 1
 process.RCTConfigProducers.jetMETLSB = 1
 process.rctDigis.ecalDigisLabel = 'rctPattern'
@@ -147,8 +134,6 @@ process.L1RCTPatternTestAnalyzer.testName = '$1'
 process.l1CaloScales.L1CaloEmEtScaleLSB = 1
 process.CaloTPGTranscoder.hcalLUT2 = 'L1Trigger/RegionalCaloTrigger/test/data/TPGcalcDecompress2Identity.txt'
 process.EcalTrigPrimESProducer.DatabaseFile = 'TPG_RCT_identity-21X.txt'
-
-#process.load("L1TriggerConfig.RCTConfigProducers.Rct-EEG_EHSUMS_TAU3_DECO_25_CRAFT1_cff")
 
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(64)
