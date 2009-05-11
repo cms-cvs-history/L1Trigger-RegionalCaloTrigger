@@ -10,7 +10,9 @@ then
 	echo "need to include a pattern name or .txt file and region sums True/False"
 	exit $EXIT_BADARGS
 fi
+
 patternName=$1
+
 ecalName=ecalData
 if [[ ! -d "${ecalName}" ]]; then    
     echo "ecal data directory doesn't exit yet; will make one"
