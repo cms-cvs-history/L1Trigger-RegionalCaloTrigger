@@ -1,10 +1,10 @@
 #!/bin/bash
 
-ARGS=2
+ARGS=1
 myFile=$1 
 regSum=True #$2
 realPattern=0
-#end=$( echo $myFile | awk '{ print substr( $0, length($0)-2,length($0)) }' )
+outputDir=~/scratch0
 if [ $# -ne "$ARGS" ]
 #if [ true ]
 then
@@ -21,8 +21,8 @@ if [[ $1 == *.txt ]]
       echo "running pattern $line" 
       cmsRun rctPattern_cfg.py >& pattern.log; 
       if [ -e  $line\Input.txt ]; then
-	  mv $line\Input.txt ~/scratch0/; 
-	  mv $line.txt ~/scratch0/;
+	  mv $line\Input.txt $outputDir/; 
+	  mv $line.txt $outputDir/;
       else
 	  echo "Files not made, pattern making unsuccessful, check pattern.log file"
       fi
@@ -46,8 +46,8 @@ else
 		sh makePatternConfig.sh $line $regSum ; 
 		cmsRun rctPattern_cfg.py >& pattern.log; 
 		if [ -e  $line\Input.txt ]; then
-		    mv $line\Input.txt ~/scratch0/${line}${num}Input.txt; 
-		    mv $line.txt ~/scratch0/${line}${num}.txt;
+		    mv $line\Input.txt $outputDir/${line}${num}Input.txt; 
+		    mv $line.txt $outputDir/${line}${num}.txt;
 		else
 		    echo "Files not made, pattern making unsuccessful, check pattern.log file"
 		fi
@@ -57,8 +57,8 @@ else
 	    echo "running pattern $line" 
 	    cmsRun rctPattern_cfg.py >& pattern.log;
 	    if [ -e  $line\Input.txt ]; then
-		mv $line\Input.txt ~/scratch0/${line}Input.txt;
-		mv $line.txt ~/scratch0/${line}.txt;
+		mv $line\Input.txt $outputDir/${line}Input.txt;
+		mv $line.txt $outputDir/${line}.txt;
 	    else
 		echo "Files not made, pattern making unsuccessful, check pattern.log file"
 	    fi
