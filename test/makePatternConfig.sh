@@ -11,14 +11,20 @@ then
 	exit $EXIT_BADARGS
 fi
 patternName=$1
-if [[ ! -d "data" ]]; then    
-    echo "ecal data directory for this pattern doesn't exit yet; will make one"
-    mkdir data
+ecalName=ecalData
+if [[ ! -d "${ecalName}" ]]; then    
+    echo "ecal data directory doesn't exit yet; will make one"
+    mkdir $ecalName
 fi
-DIRECTORY=data/$patternName
+DIRECTORY=$ecalName/$patternName
 if [[ ! -d "${DIRECTORY}" ]]; then    
     echo "directory for this pattern doesn't exit yet; will make one"
-    mkdir data/$patternName
+    mkdir $ecalName/$patternName
+fi
+
+if [[ ! -d "/tmp/${USER}" ]]; then    
+    echo "hcal data directory (/tmp/$USER) doesn't exit yet; will make one"
+    mkdir /tmp/$USER
 fi
 
 cat <<EOF > 'rctPattern_cfg.py'
@@ -185,6 +191,6 @@ process.ecalSimRawData.tcpDigiCollection = '' # 'rctPattern' #'formatTCP'  #
 process.ecalSimRawData.tpVerbose = False
 process.ecalSimRawData.tccInDefaultVal = 0
 process.ecalSimRawData.tccNum = -1
-process.ecalSimRawData.outputBaseName = 'data/$1/ecal'
+process.ecalSimRawData.outputBaseName = '$ecalName/$patternName/ecal'
 
 EOF
