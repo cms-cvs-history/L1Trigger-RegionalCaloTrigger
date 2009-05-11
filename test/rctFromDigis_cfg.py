@@ -10,18 +10,7 @@ process.load("L1TriggerConfig.RCTConfigProducers.L1RCTConfig_cff")
 
 process.load("L1Trigger.RegionalCaloTrigger.rctDigis_cfi")
 
-#process.load("L1Trigger.RegionalCaloTrigger.L1RCTPatternTestAnalyzer_cfi")
-
-process.L1RCTPatternTestAnalyzer = cms.EDAnalyzer("L1RCTPatternTestAnalyzer",
-    hcalDigisLabel = cms.InputTag("hcalTriggerPrimitiveDigis"),
-    showEmCands = cms.untracked.bool(True),
-    testName = cms.untracked.string("none"),
-    limitTo64 =  cms.untracked.bool(False),
-    ecalDigisLabel = cms.InputTag("ecalTriggerPrimitiveDigis"),
-    rctDigisLabel = cms.InputTag("rctDigis"),
-    showRegionSums = cms.untracked.bool(True)
-)
-
+process.load("L1Trigger.RegionalCaloTrigger.L1RCTPatternTestAnalyzer_cfi")
 
 process.load("L1TriggerConfig.L1ScalesProducers.L1CaloScalesConfig_cff")
 
@@ -55,13 +44,6 @@ from SimCalorimetry.EcalTrigPrimProducers.ecalTrigPrimESProducer_cff import *
 #import SimCalorimetry.EcalTrigPrimProducers.ecalTriggerPrimitiveDigis_cfi
 
 EcalTrigPrimESProducer.DatabaseFile = 'TPG_RCT_identity-21X.txt' #'TPG_startup.txt.gz'
-#EcalTrigPrimESProducer.DatabaseFileEB = "TPG_EB_20.txt"
-#EcalTrigPrimESProducer.DatabaseFileEE = "TPG_EE_20.txt"
-
-## process.EcalTrigPrimESProducer = cms.ESProducer("EcalTrigPrimESProducer",
-##    DatabaseFileEE = cms.untracked.string('TPG_EE.txt'),
-##    DatabaseFileEB = cms.untracked.string('TPG_EB.txt')
-## )
 
 process.tpparams6 = cms.ESSource("EmptyESSource",
     recordName = cms.string('EcalTPGLutGroupRcd'),
@@ -89,8 +71,6 @@ process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.load("Configuration.StandardSequences.Geometry_cff")
 process.GlobalTag.globaltag='CRUZET4_V1::All' #'CRAFT_V3P::All'
 process.load("IORawData.CaloPatterns.HtrXmlPattern_cfi")
-process.htr_xml.fill_by_hand = False
-process.htr_xml.hand_pattern_number = 1
 process.htr_xml.file_tag = 'ttbar'
 
 
@@ -103,9 +83,10 @@ process.L1RCTPatternTestAnalyzer.showRegionSums = True
 process.L1RCTPatternTestAnalyzer.limitTo64 = True
 process.L1RCTPatternTestAnalyzer.testName = 'ttbar'
 process.l1CaloScales.L1CaloEmEtScaleLSB = 1
-process.CaloTPGTranscoder.hcalLUT2 = 'TPGcalcDecompress2Identity.txt'
+process.CaloTPGTranscoder.hcalLUT2 = 'L1Trigger/RegionalCaloTrigger/test/data/TPGcalcDecompress2Identity.txt'
 process.EcalTrigPrimESProducer.DatabaseFile = 'TPG_RCT_identity-21X.txt'
 
+#process.load("L1Trigger.RegionalCaloTrigger.Rct-EEG_EHSUMS_TAU3_DECO_25_CRAFT1_cff")
 process.load("L1TriggerConfig.RCTConfigProducers.Rct-EEG_EHSUMS_TAU3_DECO_25_CRAFT1_cff")
 
 process.maxEvents = cms.untracked.PSet(
@@ -149,12 +130,12 @@ process.source = cms.Source("PoolSource",
 process.hcalPatternSource = cms.EDProducer("HcalPatternSource")
 
 process.rctSaveInput = cms.EDFilter("L1RCTSaveInput",
-    hcalDigisLabel = cms.InputTag("simHcalTriggerPrimitiveDigis"),#hcalTriggerPrimitiveDigis"),
+    hcalDigisLabel = cms.InputTag("simHcalTriggerPrimitiveDigis"),
     useDebugTpgScales = cms.bool(True),
     rctTestInputFile = cms.untracked.string('ttbarInput.txt'),
     useEcal = cms.bool(True),
     useHcal = cms.bool(True),
-    ecalDigisLabel = cms.InputTag("simEcalTriggerPrimitiveDigis")#ecalTriggerPrimitiveDigis")
+    ecalDigisLabel = cms.InputTag("simEcalTriggerPrimitiveDigis")
 )
 
 process.filter = cms.EDFilter("L1RCTFilter",
@@ -169,7 +150,7 @@ process.FEVT = cms.OutputModule("PoolOutputModule",
         # crateNumber is the card where there is energy required
         # particle ID value is the pythia number. Using 999 allows any particle
 process.input = cms.Path(process.rctDigis)
-process.p = cms.Path(process.filter*process.rctSaveInput*process.L1RCTPatternTestAnalyzer)#
+process.p = cms.Path(process.rctSaveInput*process.L1RCTPatternTestAnalyzer)#*process.filter
 #* process.ecalSimRawData * process.htr_xml)
 #process.outpath = cms.EndPath(process.FEVT)
 process.schedule = cms.Schedule(process.input,process.p)
@@ -177,7 +158,7 @@ process.schedule = cms.Schedule(process.input,process.p)
 #For ECAL pattern/link tests
 process.simEcalTriggerPrimitiveDigis.TcpOutput = True
 process.simEcalTriggerPrimitiveDigis.BarrelOnly = True
-process.simEcalTriggerPrimitiveDigis.Label = 'rctPattern' #'simEcalTriggerPrimitiveDigis' #'simEcalUnsuppressedDigis'
+process.simEcalTriggerPrimitiveDigis.Label = 'rctPattern'
 #process.simEcalTriggerPrimitiveDigis.InstanceEB = 'ebDigis'
 #process.simEcalTriggerPrimitiveDigis.InstanceEE = 'eeDigis'
 process.simEcalTriggerPrimitiveDigis.Debug = False
