@@ -1,5 +1,4 @@
 <use name=boost>
-
 <use name=FWCore/Framework>
 <use name=FWCore/ParameterSet>
 <use name=FWCore/PluginManager>
@@ -9,11 +8,16 @@
 <use name=DataFormats/EcalDetId>
 <use name=DataFormats/HcalDigi>
 <use name=DataFormats/HcalDetId>
+<use name=CalibFormats/HcalObjects>
 <use name=CalibFormats/CaloTPG>
-<use name=CondFormats/EcalObjects>
+<use name=CalibCalorimetry/EcalTPGTools>
 <use name=CondFormats/L1TObjects>
 <use name=CondFormats/DataRecord>
 <use name=clhep>
+<use name=DataFormats/JetReco>
+<use name=DataFormats/EgammaCandidates>
+<use name=DataFormats/HepMCCandidate>
+<use name=root>
 
 <export>
 <lib name=L1TriggerRegionalCaloTrigger>
@@ -27,9 +31,14 @@
 <use name=DataFormats/EcalDetId>
 <use name=DataFormats/HcalDigi>
 <use name=DataFormats/HcalDetId>
+<use name=CalibFormats/HcalObjects>
 <use name=CalibFormats/CaloTPG>
-<use name=CondFormats/EcalObjects>
+<use name=CalibCalorimetry/EcalTPGTools>
 <use name=CondFormats/L1TObjects>
 <use name=CondFormats/DataRecord>
+<use name=DataFormats/JetReco>
+<use name=DataFormats/EgammaCandidates>
+<use name=DataFormats/HepMCCandidate>
 <use name=clhep>
+<use name=root>
 </export>
