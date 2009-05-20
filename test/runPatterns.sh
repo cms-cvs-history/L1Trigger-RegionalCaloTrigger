@@ -6,9 +6,8 @@ regSum=True #$2
 realPattern=0
 outputDir=~/scratch0
 if [ $# -ne "$ARGS" ]
-#if [ true ]
 then
-	echo "need to include a pattern name or a .txt file and True/False for region sums"
+	echo "need to include a pattern name or a .txt file"
 exit $EXIT_BADARGS
 fi
 
@@ -17,7 +16,7 @@ if [[ $1 == *.txt ]]
     while [ 1 ]
       do
       read line || break
-      sh makePatternConfig.sh $line $regSum ; 
+      sh makePatternConfig.sh $line; 
       echo "running pattern $line" 
       cmsRun rctPattern_cfg.py >& pattern.log; 
       if [ -e  $line\Input.txt ]; then
@@ -43,7 +42,7 @@ else
 	    maxRandom=40;
 	    for ((num=30; num<$maxRandom; num++)); do
 		
-		sh makePatternConfig.sh $line $regSum ; 
+		sh makePatternConfig.sh $line; 
 		cmsRun rctPattern_cfg.py >& pattern.log; 
 		if [ -e  $line\Input.txt ]; then
 		    mv $line\Input.txt $outputDir/${line}${num}Input.txt; 
@@ -53,7 +52,7 @@ else
 		fi
 	    done
 	else
-	    sh makePatternConfig.sh $line $regSum ;
+	    sh makePatternConfig.sh $line;
 	    echo "running pattern $line" 
 	    cmsRun rctPattern_cfg.py >& pattern.log;
 	    if [ -e  $line\Input.txt ]; then

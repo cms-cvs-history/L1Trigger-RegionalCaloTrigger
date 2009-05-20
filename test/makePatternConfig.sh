@@ -5,9 +5,8 @@
 ARGS=1
 EXIT_BADARGS=64
 if [ $# -ne "$ARGS" ]
-#if [ true ]
 then
-	echo "need to include a pattern name or .txt file"
+	echo "need to include a pattern name"
 	exit $EXIT_BADARGS
 fi
 
@@ -34,8 +33,6 @@ import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("TEST")
 process.load("SimCalorimetry.HcalTrigPrimProducers.hcaltpdigi_cff")
-
-process.load("L1TriggerConfig.RCTConfigProducers.L1RCTConfigPatternTests_cff")
 
 process.load("L1Trigger.RegionalCaloTrigger.rctDigis_cfi")
 
@@ -110,8 +107,6 @@ process.eegeom = cms.ESSource("EmptyESSource",
     firstValid = cms.vuint32(1)
 )
 
-
-
 # L1 GT EventSetup
 from L1TriggerConfig.L1GtConfigProducers.L1GtConfig_cff import *
 from L1TriggerConfig.L1GtConfigProducers.Luminosity.startup.L1Menu_startup_v3_Unprescaled_cff import *
@@ -137,6 +132,7 @@ process.htr_xml = cms.EDFilter("HtrXmlPattern",
     hand_pattern_number = cms.untracked.int32(3)
 )
 
+process.load("L1TriggerConfig.RCTConfigProducers.L1RCTConfigPatternTests_cff")
 process.RCTConfigProducers.eGammaLSB = 1
 process.RCTConfigProducers.jetMETLSB = 1
 process.rctDigis.ecalDigisLabel = 'rctPattern'
