@@ -163,6 +163,15 @@ process.rctPattern = cms.EDProducer("L1RCTPatternProducer",
 #maybe not
 process.hcalPatternSource = cms.EDProducer("HcalPatternSource")
 
+process.rctSaveInput = cms.EDFilter("L1RCTSaveInput",
+    hcalDigisLabel = cms.InputTag("rctPattern"),#hcalTriggerPrimitiveDigis"),
+    useDebugTpgScales = cms.bool(True),
+    rctTestInputFile = cms.untracked.string('${patternName}Input.txt'),
+    useEcal = cms.bool(True),
+    useHcal = cms.bool(True),
+    ecalDigisLabel = cms.InputTag("rctPattern")#ecalTriggerPrimitiveDigis")
+)
+
 process.rctDigiToSourceCardText = cms.EDFilter("RctDigiToSourceCardText",
     RctInputLabel = cms.InputTag("rctDigis"),
     TextFileName = cms.string('RctDigiToSourceCardwalkingOnes.dat')
@@ -174,8 +183,8 @@ process.FEVT = cms.OutputModule("PoolOutputModule",
 )
 
 process.input = cms.Path(process.rctPattern)
-process.p = cms.Path(process.rctDigis * process.L1RCTPatternTestAnalyzer * process.htr_xml *  process.ecalSimRawData ) 
-#* process.htr_xml *  process.ecalSimRawData
+process.p = cms.Path(process.rctDigis * process.rctSaveInput * process.L1RCTPatternTestAnalyzer ) 
+#* process.htr_xml *  process.ecalSimRawData 
 process.outpath = cms.EndPath(process.FEVT)
 process.schedule = cms.Schedule(process.input,process.p)
 
