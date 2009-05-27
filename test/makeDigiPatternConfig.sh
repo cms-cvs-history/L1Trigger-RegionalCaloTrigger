@@ -53,7 +53,7 @@ process.rctDigis.ecalDigisLabel = 'rctPattern'
 process.rctDigis.hcalDigisLabel = 'rctPattern'
 process.rctDigis.useDebugTpgScales = True
 process.L1RCTPatternTestAnalyzer.showRegionSums = True
-process.L1RCTPatternTestAnalyzer.testName = 'ttbar'
+process.L1RCTPatternTestAnalyzer.testName = '$patternName'
 process.l1CaloScales.L1CaloEmEtScaleLSB = 1
 process.CaloTPGTranscoder.hcalLUT2 = 'L1Trigger/RegionalCaloTrigger/test/data/TPGcalcDecompress2Identity.txt'
 process.EcalTrigPrimESProducer.DatabaseFile = 'TPG_RCT_identity-21X.txt'
@@ -67,7 +67,7 @@ process.rctPattern = cms.EDProducer("L1RCTPatternProducer",
     fgEcalE = cms.untracked.int32(4),
     randomPercent = cms.untracked.int32(10),
     rctTestInputFile = cms.untracked.string('rctInput'),
-    testName = cms.untracked.string('ttbar'),
+    testName = cms.untracked.string('$patternName'),
     regionSums = cms.untracked.bool(True)
 )
 
@@ -79,7 +79,7 @@ process.rctDigiToSourceCardText = cms.EDFilter("RctDigiToSourceCardText",
 process.rctSaveInput = cms.EDFilter("L1RCTSaveInput",
     hcalDigisLabel = cms.InputTag("rctPattern"),
     useDebugTpgScales = cms.bool(True),
-    rctTestInputFile = cms.untracked.string('ttbarInput.txt'),
+    rctTestInputFile = cms.untracked.string('${patternName}Input.txt'),
     useEcal = cms.bool(True),
     useHcal = cms.bool(True),
     ecalDigisLabel = cms.InputTag("rctPattern"),
@@ -376,7 +376,7 @@ process.htr_xml = cms.EDFilter("HtrXmlPattern",
                                
                                write_root_file = cms.untracked.bool(True),
                                XML_file_mode = cms.untracked.int32(3), #0=no-output; 1=one-file; 2=one-file-per-crate; 3=one-file-per-fiber
-                               file_tag = cms.untracked.string('ttbar'),
+                               file_tag = cms.untracked.string('$patternName'),
                                user_output_directory = cms.untracked.string('/tmp'),
                                
                                fill_by_hand = cms.untracked.bool(True),
@@ -392,7 +392,7 @@ process.rctDigis.hcalDigisLabel = 'simHcalTriggerPrimitiveDigis' #hcalTriggerPri
 #process.rctDigis.useDebugTpgScales = True
 process.L1RCTPatternTestAnalyzer.showRegionSums = True
 process.L1RCTPatternTestAnalyzer.limitTo64 = True
-process.L1RCTPatternTestAnalyzer.testName = 'ttbar'
+process.L1RCTPatternTestAnalyzer.testName = '$patternName'
 process.l1CaloScales.L1CaloEmEtScaleLSB = 1
 process.CaloTPGTranscoder.hcalLUT2 = 'L1Trigger/RegionalCaloTrigger/test/data/TPGcalcDecompress2Identity.txt'
 process.EcalTrigPrimESProducer.DatabaseFile = 'TPG_RCT_identity-21X.txt'
@@ -428,7 +428,7 @@ process.hcalPatternSource = cms.EDProducer("HcalPatternSource")
 process.rctSaveInput = cms.EDFilter("L1RCTSaveInput",
     hcalDigisLabel = cms.InputTag("simHcalTriggerPrimitiveDigis"),
     useDebugTpgScales = cms.bool(True),
-    rctTestInputFile = cms.untracked.string('ttbarInput.txt'),
+    rctTestInputFile = cms.untracked.string('${patternName}Input.txt'),
     useEcal = cms.bool(True),
     useHcal = cms.bool(True),
     ecalDigisLabel = cms.InputTag("simEcalTriggerPrimitiveDigis"),
@@ -467,7 +467,7 @@ process.ecalSimRawData.tcpDigiCollection = '' #'formatTCP'
 process.ecalSimRawData.tpVerbose = False
 process.ecalSimRawData.tccInDefaultVal = 0
 process.ecalSimRawData.tccNum = -1
-process.ecalSimRawData.outputBaseName = 'ttbardata/ecal'
+process.ecalSimRawData.outputBaseName = '${patternName}data/ecal'
 
 EOF
 
