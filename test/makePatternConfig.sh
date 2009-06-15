@@ -144,7 +144,7 @@ process.l1CaloScales.L1CaloEmEtScaleLSB = 1
 process.CaloTPGTranscoder.hcalLUT2 = 'L1Trigger/RegionalCaloTrigger/test/data/TPGcalcDecompress2Identity.txt'
 process.EcalTrigPrimESProducer.DatabaseFile = 'TPG_RCT_identity-21X.txt'
 
-#process.load("L1TriggerConfig.RCTConfigProducers.Rct-EEG_EHSUMS_TAU3_DECO_25_CRAFT1_cff")
+#process.load("L1TriggerConfig.RCTConfigProducers.EEG_EHSUMS_TAU3_DECO_25_CRAFT1_cff")
 
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(64)
