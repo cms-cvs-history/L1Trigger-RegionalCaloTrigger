@@ -3,8 +3,11 @@
 ARGS=1
 myFile=$1 
 regSum=True #$2
+nEvents=63
 realPattern=0
 outputDir=~/scratch0
+testDir=$CMSSW_BASE/src/L1Trigger/RegionalCaloTrigger/test
+
 if [ $# -ne "$ARGS" ]
 then
 	echo "need to include a pattern name or a .txt file"
@@ -16,9 +19,9 @@ if [[ $1 == *.txt ]]
     while [ 1 ]
       do
       read line || break
-      sh makePatternConfig.sh $line; 
+      sh $testDir/makePatternConfig.sh $line $regSum $nEvents; 
       echo "running pattern $line" 
-      cmsRun rctPattern_cfg.py >& pattern.log; 
+      cmsRun $testDir/rctPattern_cfg.py >& pattern.log; 
       if [ -e  $line\Input.txt ]; then
 	  mv $line\Input.txt $outputDir/; 
 	  mv $line.txt $outputDir/;
@@ -35,15 +38,15 @@ else
 	  then
 	  realPattern=1;
       fi
-    done < "patternList.txt"
+    done < "$testDir/patternList.txt"
     if [ "$realPattern" -eq "1" ]
 	then
 	if [[ $line == "random" && $2 == "many" ]]; then
 	    maxRandom=40;
 	    for ((num=30; num<$maxRandom; num++)); do
 		
-		sh makePatternConfig.sh $line; 
-		cmsRun rctPattern_cfg.py >& pattern.log; 
+		sh $testDir/makePatternConfig.sh $line $regSum $nEvents; 
+		cmsRun $testDir/rctPattern_cfg.py >& pattern.log; 
 		if [ -e  $line\Input.txt ]; then
 		    mv $line\Input.txt $outputDir/${line}${num}Input.txt; 
 		    mv $line.txt $outputDir/${line}${num}.txt;
@@ -52,9 +55,9 @@ else
 		fi
 	    done
 	else
-	    sh makePatternConfig.sh $line;
+	    sh $testDir/makePatternConfig.sh $line $regSum $nEvents;
 	    echo "running pattern $line" 
-	    cmsRun rctPattern_cfg.py >& pattern.log;
+	    cmsRun $testDir/rctPattern_cfg.py >& pattern.log;
 	    if [ -e  $line\Input.txt ]; then
 		mv $line\Input.txt $outputDir/${line}Input.txt;
 		mv $line.txt $outputDir/${line}.txt;

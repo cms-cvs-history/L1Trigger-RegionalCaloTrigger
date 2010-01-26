@@ -2,7 +2,7 @@
 
 ### Make a congif file for a particular pattern  ###
 
-ARGS=1
+ARGS=3
 EXIT_BADARGS=64
 if [ $# -ne "$ARGS" ]
 then
@@ -12,15 +12,17 @@ fi
 
 patternName=$1
 
+testDir=$CMSSW_BASE/src/L1Trigger/RegionalCaloTrigger/test
+
 ecalName=ecalData
-if [[ ! -d "${ecalName}" ]]; then    
+if [[ ! -d "$testDir/${ecalName}" ]]; then    
     echo "ecal data directory doesn't exit yet; will make one"
-    mkdir $ecalName
+    mkdir $testDir/$ecalName
 fi
-DIRECTORY=$ecalName/$patternName
+DIRECTORY=$testDir/$ecalName/$patternName
 if [[ ! -d "${DIRECTORY}" ]]; then    
     echo "directory for this pattern doesn't exit yet; will make one"
-    mkdir $ecalName/$patternName
+    mkdir $testDir/$ecalName/$patternName
 fi
 
 if [[ ! -d "/tmp/${USER}" ]]; then    
@@ -28,7 +30,7 @@ if [[ ! -d "/tmp/${USER}" ]]; then
     mkdir /tmp/$USER
 fi
 
-cat <<EOF > 'rctPattern_cfg.py'
+cat <<EOF > "${testDir}/rctPattern_cfg.py"
 import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("TEST")
@@ -45,7 +47,9 @@ process.L1RCTPatternTestAnalyzer = cms.EDAnalyzer("L1RCTPatternTestAnalyzer",
     limitTo64 =  cms.untracked.bool(False),
     ecalDigisLabel = cms.InputTag("ecalTriggerPrimitiveDigis"),
     rctDigisLabel = cms.InputTag("rctDigis"),
-    showRegionSums = cms.untracked.bool(True)
+    showRegionSums = cms.untracked.bool(True),
+    nPatternEv = cms.untracked.int32($3),
+    nSamplesPerEv = cms.untracked.int32(2)
 )
 
 
@@ -147,7 +151,7 @@ process.EcalTrigPrimESProducer.DatabaseFile = 'TPG_RCT_identity-21X.txt'
 #process.load("L1TriggerConfig.RCTConfigProducers.EEG_EHSUMS_TAU3_DECO_25_CRAFT1_cff")
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(64)
+    input = cms.untracked.int32(62)
 )
 process.source = cms.Source("EmptySource")
 
@@ -157,7 +161,9 @@ process.rctPattern = cms.EDProducer("L1RCTPatternProducer",
     randomSeed = cms.untracked.int32(12345),
     rctTestInputFile = cms.untracked.string('rctInput'),
     testName = cms.untracked.string('$1'),
-    regionSums = cms.untracked.bool(True)  #$2)
+    regionSums = cms.untracked.bool(True),  #$2)
+     nPatternEv = cms.untracked.int32($3),
+    nSamplesPerEv = cms.untracked.int32(2)
 )
 
 #maybe not
@@ -195,9 +201,10 @@ process.ecalSimRawData.fe2dccData = False# True #
 process.ecalSimRawData.trigPrimProducer = 'rctPattern' #'ecalTriggerPrimitiveDigis' #
 #process.ecalSimRawData.trigPrimDigiCollection ='rctPattern' #'simEcalTriggerPrimitiveDigis' #
 process.ecalSimRawData.tcpDigiCollection = '' # 'rctPattern' #'formatTCP'  #
-process.ecalSimRawData.tpVerbose = False
+process.ecalSimRawData.tpVerbose = True
 process.ecalSimRawData.tccInDefaultVal = 0
 process.ecalSimRawData.tccNum = -1
-process.ecalSimRawData.outputBaseName = '$ecalName/$patternName/ecal'
+process.ecalSimRawData.outputBaseName = '$testDir/$ecalName/$patternName/ecal'
+process.ecalSimRawData.newTccFormat = True
 
 EOF
