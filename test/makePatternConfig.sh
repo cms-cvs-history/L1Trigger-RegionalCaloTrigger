@@ -49,7 +49,7 @@ process.L1RCTPatternTestAnalyzer = cms.EDAnalyzer("L1RCTPatternTestAnalyzer",
     rctDigisLabel = cms.InputTag("rctDigis"),
     showRegionSums = cms.untracked.bool(True),
     nPatternEv = cms.untracked.int32($3),
-    nSamplesPerEv = cms.untracked.int32(2)
+    nSamplesPerEv = cms.untracked.int32(1)
 )
 
 
@@ -163,7 +163,7 @@ process.rctPattern = cms.EDProducer("L1RCTPatternProducer",
     testName = cms.untracked.string('$1'),
     regionSums = cms.untracked.bool(True),  #$2)
      nPatternEv = cms.untracked.int32($3),
-    nSamplesPerEv = cms.untracked.int32(2)
+    nSamplesPerEv = cms.untracked.int32(1)
 )
 
 #maybe not
