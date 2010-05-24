@@ -48,10 +48,20 @@ class L1RCTProducer : public edm::EDProducer
  public:
   explicit L1RCTProducer(const edm::ParameterSet& ps);
   virtual ~L1RCTProducer();
-  virtual void beginRun(edm::Run& r, const edm::EventSetup& c);
-  virtual void produce(edm::Event& e, const edm::EventSetup& c);
+
+
 
  private:
+
+  ///Luminosity Block 
+  void updateConfiguration(const edm::EventSetup&);
+
+  virtual void beginRun(edm::Run& r, const edm::EventSetup& c);
+  virtual void produce(edm::Event& e, const edm::EventSetup& c);
+  virtual void beginLuminosityBlock(edm::LuminosityBlock& lumiSeg, 
+                            const edm::EventSetup& context) ;
+
+
   L1RCTLookupTables* rctLookupTables;
   L1RCT* rct;
   bool useEcal;
@@ -60,9 +70,12 @@ class L1RCTProducer : public edm::EDProducer
   std::vector<edm::InputTag> hcalDigis;
   std::vector<int> bunchCrossings; 
 
+  short int  lumiConfigClock;
 
   //Create a channel mask object to be updated at every Run....
   L1RCTChannelMask* fedUpdatedMask;
+
+
 
 
   enum crateSection{

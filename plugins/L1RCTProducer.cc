@@ -44,7 +44,8 @@ L1RCTProducer::L1RCTProducer(const edm::ParameterSet& conf) :
   produces<L1CaloEmCollection>();
   produces<L1CaloRegionCollection>();
 
- 
+
+  lumiConfigClock = 0;
 
 }
 
@@ -55,8 +56,7 @@ L1RCTProducer::~L1RCTProducer()
   if(fedUpdatedMask != 0) delete fedUpdatedMask;
 }
 
-
-void L1RCTProducer::beginRun(edm::Run& run, const edm::EventSetup& eventSetup)
+void L1RCTProducer::updateConfiguration(const edm::EventSetup& eventSetup)
 {
   // Refresh configuration information every event
   // Hopefully, this does not take too much time
@@ -228,6 +228,33 @@ void L1RCTProducer::beginRun(edm::Run& run, const edm::EventSetup& eventSetup)
   rctLookupTables->setChannelMask(fedUpdatedMask);
   rctLookupTables->setL1CaloEtScale(s);
 }
+
+
+void L1RCTProducer::beginRun(edm::Run& run, const edm::EventSetup& eventSetup)
+{
+  lumiConfigClock = 0;
+  updateConfiguration(eventSetup);
+}
+
+
+void 
+L1RCTProducer::beginLuminosityBlock(edm::LuminosityBlock& lumiSeg,const edm::EventSetup& es)
+{
+  if(lumiConfigClock>=0) {
+    if(lumiConfigClock>0&&lumiConfigClock<6)
+      {
+	updateConfiguration(es);
+	lumiConfigClock++      ;
+      }
+    else
+      {
+	lumiConfigClock = -1;
+      }
+    
+  }
+
+} 
+
 
 
 void L1RCTProducer::produce(edm::Event& event, const edm::EventSetup& eventSetup)
