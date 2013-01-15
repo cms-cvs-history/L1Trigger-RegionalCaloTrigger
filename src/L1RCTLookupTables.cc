@@ -145,15 +145,15 @@ unsigned int L1RCTLookupTables::lookup(unsigned short ecalInput,
     }
   else if (rctParameters_->jetMETECalScaleFactors()[iAbsEta-1] == 0. )
     {
-      shiftActivityBit = activityBit(0., hcal)<<17;
+      shiftActivityBit = activityBit(0., hcal,fgbit)<<17;
     }
   else if (rctParameters_->jetMETHCalScaleFactors()[iAbsEta-1] == 0. )
     {
-      shiftActivityBit = activityBit(ecal, 0.)<<17;
+      shiftActivityBit = activityBit(ecal, 0.,fgbit)<<17;
     }
   else
     {
-      shiftActivityBit = activityBit(ecal, hcal)<<17;
+      shiftActivityBit = activityBit(ecal, hcal,fgbit)<<17;
     }
   unsigned long output=etIn7Bits+shiftHE_FGBit+shiftEtIn9Bits+shiftActivityBit;
   return output;
@@ -221,7 +221,7 @@ bool L1RCTLookupTables::hOeFGVetoBit(float ecal, float hcal, bool fgbit) const
   return veto;
 }
 
-bool L1RCTLookupTables::activityBit(float ecal, float hcal) const
+bool L1RCTLookupTables::activityBit(float ecal, float hcal, bool fgbit) const
 {
   // Redefined for upgrade as EM activity only
   if(rctParameters_ == 0)
@@ -237,12 +237,22 @@ bool L1RCTLookupTables::activityBit(float ecal, float hcal) const
     // We redefine tauVeto() for upgrade as EM activity only  -- 
     // both EG and Tau make it through the EIC and JSC to CTP cards
     // In the CTP card we want to rechannel EG/Tau candidates to EG and Tau
-    if(ecal > rctParameters_->eActivityCut()) {
-      if((hcal/ecal) < rctParameters_->hOeCut()) {
+
+//    if(ecal > rctParameters_->eActivityCut()) {
+//      if((hcal/ecal) < rctParameters_->hOeCut()) {
+//     if(fgbit ||  ((ecal+hcal)>(rctParameters_->eActivityCut()+rctParameters_->hActivityCut())&&hcal/(ecal+hcal)>rctParameters_->hOeCut()) || ((ecal+hcal)<(rctParameters_->eActivityCut()+rctParameters_->hActivityCut()) && hcal > rctParameters_->hActivityCut())){
+	
+	if(fgbit ||  ((ecal)>(rctParameters_->eActivityCut())&&hcal/(ecal+hcal)>rctParameters_->hOeCut()) || ((ecal)<=(rctParameters_->eActivityCut()) && hcal > rctParameters_->hActivityCut())){
 	aBit = true;
-      }
+//      }
     }
+/*   if( (ecal+hcal)>0){
+      if(aBit) std::cout<<"LUT ACTIVITY VETO  ----------> ECAL= "<<ecal<<"  HCAL="<<hcal<<"   HoE= "<<hcal/ecal<<std::endl;	
+//      else if( (ecal+hcal)>2) std::cout<<"LUT ACTIVITY VETO  ---------->     Failed!!!     ECAL="<<ecal<<"  HCAL="<<hcal<<"   HoE= "<<hcal/ecal<<std::endl;
+   }	
+*/
   }
+
   return aBit;
 }
 
@@ -332,4 +342,5 @@ unsigned int L1RCTLookupTables::jetMETETCode(float ecal, float hcal, int iAbsEta
       << "L1RCTParameters should be set every event" << rctParameters_;
   float etLinear = rctParameters_->JetMETTPGSum(ecal,hcal,iAbsEta);
   return convertToInteger(etLinear, rctParameters_->jetMETLSB(), 9);
+
 }

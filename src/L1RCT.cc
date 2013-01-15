@@ -385,6 +385,7 @@ vector<L1CaloRegion> L1RCT::getRegions(unsigned crate){
       bool quiet = quiets[card*2+rgn];
       bool overflow = overflows[card*2+rgn];
       unsigned barrelEnergy = barrelEnergies.at(card*2+rgn);
+      //if(barrelEnergy!=0) cout<<"L1RCT: Is this a tau? "<<tau<<"   barrelEnergy: "<<barrelEnergy<<endl;
       L1CaloRegion region(barrelEnergy, overflow, tau, mip, quiet, crate, card, rgn);
       regionCollection.push_back(region);
     }
