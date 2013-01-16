@@ -367,10 +367,6 @@ L1CaloEmCollection L1RCT::getNonisolatedEGObjects(unsigned crate){
     unsigned energy = ((nonIsoEmObjects.at(i))/16);
     unsigned rank = rctLookupTables_->emRank(energy);
     L1CaloEmCand nonIsoCand(rank, rgn, crd, crate, 0, i, 0);  // includes emcand index
-    if (rank > 63) {
-      std::cout << "en: " << energy << " rnk: " << rank << " candrnk: "
-        << nonIsoCand.rank() << std::endl;
-    }
     nonIsoEmCands.push_back(nonIsoCand);
   }
   return nonIsoEmCands;
